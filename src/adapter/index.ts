@@ -14,7 +14,7 @@ const getAdapter = async (service: string, options: configOptions) => {
   switch (cds.services[service].constructor.name) {
     case 'PostgresDatabase':
       return new PostgresAdapter(service, options)
-    case 'DB2Databse':
+    case 'DB2Database':
       return new DB2Adapter(service,options)  
     default:
       throw 'Unsupported database. Currently only PostgreSQL (cds-pg) is supported.'
