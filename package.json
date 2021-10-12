@@ -29,8 +29,8 @@
     "sap",
     "cap",
     "cds",
-    "PostgreSQL",
-    "postgres"
+    "DB2",
+    "db2"
   ],
   "author": "Mike Zaschka",
   "license": "MIT",
@@ -52,7 +52,6 @@
   "devDependencies": {
     "@commitlint/cli": "^13.2.0",
     "@commitlint/config-conventional": "^13.2.0",
-    "@sap/hana-client": "^2.10.13",
     "@types/jest": "^27.0.2",
     "@types/yargs": "^17.0.3",
     "cds-pg": "0.1.10",
