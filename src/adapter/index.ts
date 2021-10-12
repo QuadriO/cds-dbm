@@ -1,4 +1,5 @@
 import { PostgresAdapter } from './PostgresAdapter'
+import { DB2Adapter } from './DB2Adapter'
 import { configOptions } from '../config'
 
 /**
@@ -13,6 +14,8 @@ const getAdapter = async (service: string, options: configOptions) => {
   switch (cds.services[service].constructor.name) {
     case 'PostgresDatabase':
       return new PostgresAdapter(service, options)
+    case 'DB2Databse':
+      return new DB2Adapter(service,options)  
     default:
       throw 'Unsupported database. Currently only PostgreSQL (cds-pg) is supported.'
   }
