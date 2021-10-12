@@ -17,7 +17,7 @@ const getAdapter = async (service: string, options: configOptions) => {
     case 'DB2Database':
       return new DB2Adapter(service,options)  
     default:
-      throw 'Unsupported database. Currently only PostgreSQL (cds-pg) is supported.'
+      throw 'Unsupported database. Currently only PostgreSQL (cds-pg) and DB2 (cds-db2) is supported.'
   }
 }
 
