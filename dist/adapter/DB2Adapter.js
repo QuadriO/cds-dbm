@@ -26,11 +26,11 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
         var _a, _b;
         const credentials = this.options.service.credentials;
         const connection = ibm_db_1.default.openSync(getCredentialsForClient(credentials, true));
-        const { rows } = connection.querySync(`SELECT table_name, view_definition FROM information_schema.views WHERE table_schema = 'public' AND table_name = $1 ORDER BY table_name;`, [viewName]);
+        const rows = connection.querySync(`SELECT viewname, text FROM SYSCAT.views WHERE viewschema = '${this.options.migrations.schema.default}' AND table_name = '${viewName}';`);
         connection.closeSync();
         const viewDefinition = {
             name: viewName,
-            definition: (_b = (_a = rows[0]) === null || _a === void 0 ? void 0 : _a.view_definition) === null || _b === void 0 ? void 0 : _b.replace(/public./g, ''),
+            definition: (_b = (_a = rows[0]) === null || _a === void 0 ? void 0 : _a.text) === null || _b === void 0 ? void 0 : _b.replace(/public./g, ''),
         };
         return viewDefinition;
     }
@@ -52,7 +52,7 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
         const credentials = this.options.service.credentials;
         const cloneSchema = this.options.migrations.schema.clone;
         const connection = ibm_db_1.default.openSync(getCredentialsForClient(credentials, true));
-        await connection.querySync(`SET PATH TO ${cloneSchema};`);
+        await connection.querySync(`SET CURRENT SCHEMA ${cloneSchema};`);
         for (const query of this.cdsSQL) {
             const [, table, entity] = query.match(/^\s*CREATE (?:(TABLE)|VIEW)\s+"?([^\s(]+)"?/im) || [];
             if (!table) {
@@ -102,6 +102,15 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
         const cloneSchema = this.options.migrations.schema.clone;
         const temporaryChangelogFile = `${this.options.migrations.deploy.tmpFile}`;
         const connection = ibm_db_1.default.openSync(getCredentialsForClient(credentials, true));
+        const tables = await connection.querySync(`SELECT * FROM syscat.tables WHERE TABSCHEMA LIKE '${cloneSchema}'`);
+        tables.forEach(async function (table) {
+            if (table.TYPE === 'T') {
+                await connection.querySync(`DROP TABLE ${cloneSchema}.${table.TABNAME}`);
+            }
+            else if (table.TYPE === 'V') {
+                await connection.querySync(`DROP VIEW ${cloneSchema}.${table.TABNAME}`);
+            }
+        });
         await connection.querySync(`DROP SCHEMA ${cloneSchema} RESTRICT`);
         await connection.querySync(`CREATE SCHEMA ${cloneSchema}`);
         await connection.closeSync();
@@ -129,9 +138,18 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
         const credentials = this.options.service.credentials;
         const referenceSchema = this.options.migrations.schema.reference;
         const connection = ibm_db_1.default.openSync(getCredentialsForClient(credentials, true));
+        const tables = await connection.querySync(`SELECT * FROM syscat.tables WHERE TABSCHEMA LIKE '${referenceSchema}'`);
+        tables.forEach(async function (table) {
+            if (table.TYPE === 'T') {
+                await connection.querySync(`DROP TABLE ${referenceSchema}.${table.TABNAME}`);
+            }
+            else if (table.TYPE === 'V') {
+                await connection.querySync(`DROP VIEW ${referenceSchema}.${table.TABNAME}`);
+            }
+        });
         await connection.querySync(`DROP SCHEMA ${referenceSchema} RESTRICT`);
         await connection.querySync(`CREATE SCHEMA ${referenceSchema}`);
-        await connection.querySync(`SET PATH TO ${referenceSchema};`);
+        await connection.querySync(`SET CURRENT SCHEMA ${referenceSchema};`);
         const serviceInstance = cds.services[this.serviceKey];
         for (const query of this.cdsSQL) {
             await connection.querySync(serviceInstance.cdssql2db2sql(query));
