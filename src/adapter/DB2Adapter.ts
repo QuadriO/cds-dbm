@@ -25,16 +25,15 @@ export class DB2Adapter extends BaseAdapter {
     const credentials = this.options.service.credentials
     const connection = DB2.openSync(getCredentialsForClient(credentials, true))
 
-    const { rows } = connection.querySync(
-        `SELECT table_name, view_definition FROM information_schema.views WHERE table_schema = 'public' AND table_name = $1 ORDER BY table_name;`,
-        [viewName]
+    const rows = connection.querySync(
+        `SELECT viewname, text FROM SYSCAT.views WHERE viewschema = '${this.options.migrations.schema.default}' AND table_name = '${viewName}';`
     )
     
     connection.closeSync();
 
     const viewDefinition: ViewDefinition = {
       name: viewName,
-      definition: rows[0]?.view_definition?.replace(/public./g, ''),
+      definition: rows[0]?.text?.replace(/public./g, ''),
     }
 
     return viewDefinition
@@ -60,7 +59,7 @@ export class DB2Adapter extends BaseAdapter {
     const cloneSchema = this.options.migrations.schema!.clone
     const connection = DB2.openSync(getCredentialsForClient(credentials, true))
 
-    await connection.querySync(`SET PATH TO ${cloneSchema};`)
+    await connection.querySync(`SET CURRENT SCHEMA ${cloneSchema};`)
 
     for (const query of this.cdsSQL) {
       const [, table, entity] = query.match(/^\s*CREATE (?:(TABLE)|VIEW)\s+"?([^\s(]+)"?/im) || []
@@ -120,6 +119,14 @@ export class DB2Adapter extends BaseAdapter {
     const temporaryChangelogFile = `${this.options.migrations.deploy.tmpFile}`
 
     const connection = DB2.openSync(getCredentialsForClient(credentials, true));
+    const tables = await connection.querySync(`SELECT * FROM syscat.tables WHERE TABSCHEMA LIKE '${cloneSchema}'`)
+    tables.forEach(async function (table) {
+      if (table.TYPE === 'T') {
+        await connection.querySync(`DROP TABLE ${cloneSchema}.${table.TABNAME}`)
+      } else if (table.TYPE === 'V') {
+        await connection.querySync(`DROP VIEW ${cloneSchema}.${table.TABNAME}`)
+      }
+    })
     await connection.querySync(`DROP SCHEMA ${cloneSchema} RESTRICT`)
     await connection.querySync(`CREATE SCHEMA ${cloneSchema}`)
     await connection.closeSync()
@@ -155,9 +162,17 @@ export class DB2Adapter extends BaseAdapter {
     const credentials = this.options.service.credentials
     const referenceSchema = this.options.migrations.schema!.reference
     const connection = DB2.openSync(getCredentialsForClient(credentials, true))
+    const tables = await connection.querySync(`SELECT * FROM syscat.tables WHERE TABSCHEMA LIKE '${referenceSchema}'`)
+    tables.forEach(async function (table) {
+      if (table.TYPE === 'T') {
+        await connection.querySync(`DROP TABLE ${referenceSchema}.${table.TABNAME}`)
+      } else if (table.TYPE === 'V') {
+        await connection.querySync(`DROP VIEW ${referenceSchema}.${table.TABNAME}`)
+      }
+    })
     await connection.querySync(`DROP SCHEMA ${referenceSchema} RESTRICT`)
     await connection.querySync(`CREATE SCHEMA ${referenceSchema}`)
-    await connection.querySync(`SET PATH TO ${referenceSchema};`)
+    await connection.querySync(`SET CURRENT SCHEMA ${referenceSchema};`)
 
     const serviceInstance = cds.services[this.serviceKey] as DB2Database
     for (const query of this.cdsSQL) {

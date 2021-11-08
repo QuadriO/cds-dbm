@@ -255,7 +255,7 @@ export abstract class BaseAdapter {
     const updateCmd = dryRun ? 'updateSQL' : 'update'
     liquibaseOptions = this.liquibaseOptionsFor(updateCmd)
     liquibaseOptions.changeLogFile = temporaryChangelogFile
-
+    liquibaseOptions.defaultSchemaName = this.options.migrations.schema.default
     const updateSQL: any = await liquibase(liquibaseOptions).run(updateCmd)
     if (!dryRun) {
       this.logger.log(`[cds-dbm] - delta successfully deployed to the database`)
