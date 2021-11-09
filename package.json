@@ -1,5 +1,5 @@
 {
-  "name": "cds-dbm",
+  "name": "@QuadriO/cds-dbm",
   "version": "0.0.28",
   "description": "Database deployment and migrations for SAP CAP",
   "main": "index.js",
