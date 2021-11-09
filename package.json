@@ -1,5 +1,5 @@
 {
-  "name": "@QuadriO/cds-dbm",
+  "name": "@quadrio/cds-dbm",
   "version": "0.0.28",
   "description": "Database deployment and migrations for SAP CAP",
   "main": "index.js",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/QuadriO/cds-dbm.git"
+    "url": "git+https://github.com/quadrio/cds-dbm.git"
   },
   "keywords": [
     "sap",
@@ -37,9 +37,9 @@
   "author": "Mike Zaschka",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/QuadriO/cds-dbm/issues"
+    "url": "https://github.com/quadrio/cds-dbm/issues"
   },
-  "homepage": "https://github.com/QuadriO/cds-dbm#readme",
+  "homepage": "https://github.com/quadrio/cds-dbm#readme",
   "dependencies": {
     "@sap/cds": "5.5.2",
     "@types/js-yaml": "^4.0.4",
