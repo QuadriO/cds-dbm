@@ -32,7 +32,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions Version Bot"
           git config user.email "<>"
-      - run: npm release
+      - run: npm run release
       - name: Push tags
         run: |
           git push
