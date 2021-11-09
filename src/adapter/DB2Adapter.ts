@@ -104,7 +104,19 @@ export class DB2Adapter extends BaseAdapter {
         liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema!.reference
         break
       case 'update':
+        liquibaseOptions.referenceUrl = liquibaseOptions.url
+        liquibaseOptions.referenceUsername = liquibaseOptions.username
+        liquibaseOptions.referencePassword = liquibaseOptions.password
+        liquibaseOptions.defaultSchemaName = this.options.migrations.schema!.default
+        liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema!.reference
+        break
       case 'updateSQL':
+        liquibaseOptions.referenceUrl = liquibaseOptions.url
+        liquibaseOptions.referenceUsername = liquibaseOptions.username
+        liquibaseOptions.referencePassword = liquibaseOptions.password
+        liquibaseOptions.defaultSchemaName = this.options.migrations.schema!.default
+        liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema!.reference
+        break
       case 'dropAll':
       default:
         break
