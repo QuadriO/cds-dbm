@@ -6,4 +6,3 @@ tmp
 .cds_gen.log
 .env
 env_variables.yaml
-package-lock.json

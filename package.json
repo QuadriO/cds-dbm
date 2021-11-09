@@ -4,6 +4,7 @@
   "description": "Database deployment and migrations for SAP CAP",
   "main": "index.js",
   "scripts": {
+    "commit": "git-cz",
     "test": "",
     "jest:changelog": "for i in {1..10}; do npx jest test/Changelog.test.ts --runInBand --silent || (echo 'Failed after $i attempts' && break); done",
     "jest": "jest --runInBand --silent",
@@ -60,6 +61,7 @@
     "eslint": "^8.2.0",
     "eslint-plugin-jest": "^25.2.4",
     "express": "^4.17.1",
+    "git-cz": "^4.8.0",
     "husky": "^7.0.4",
     "jest": "^27",
     "lint-staged": "^11.2.6",
