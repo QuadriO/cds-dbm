@@ -90,18 +90,8 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
                 liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema.reference;
                 break;
             case 'update':
-                liquibaseOptions.referenceUrl = liquibaseOptions.url;
-                liquibaseOptions.referenceUsername = liquibaseOptions.username;
-                liquibaseOptions.referencePassword = liquibaseOptions.password;
-                liquibaseOptions.defaultSchemaName = this.options.migrations.schema.default;
-                liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema.reference;
                 break;
             case 'updateSQL':
-                liquibaseOptions.referenceUrl = liquibaseOptions.url;
-                liquibaseOptions.referenceUsername = liquibaseOptions.username;
-                liquibaseOptions.referencePassword = liquibaseOptions.password;
-                liquibaseOptions.defaultSchemaName = this.options.migrations.schema.default;
-                liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema.reference;
                 break;
             case 'dropAll':
             default:
@@ -138,6 +128,7 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
         // Now deploy the copy to the clone
         liquibaseOptions = this.liquibaseOptionsFor('update');
         liquibaseOptions.defaultSchemaName = cloneSchema;
+        liquibaseOptions.referenceDefaultSchemaName = this.options.migrations.schema.default;
         liquibaseOptions.changeLogFile = temporaryChangelogFile;
         await (0, liquibase_1.default)(liquibaseOptions).run('update');
         fs_1.default.unlinkSync(temporaryChangelogFile);
