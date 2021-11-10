@@ -26,7 +26,7 @@ class DB2Adapter extends BaseAdapter_1.BaseAdapter {
         var _a, _b;
         const credentials = this.options.service.credentials;
         const connection = ibm_db_1.default.openSync(getCredentialsForClient(credentials, true));
-        const rows = connection.querySync(`SELECT viewname, text FROM SYSCAT.views WHERE viewschema = '${this.options.migrations.schema.default}' AND table_name = '${viewName}';`);
+        const rows = connection.querySync(`SELECT viewname, text FROM SYSCAT.views WHERE viewschema = '${this.options.migrations.schema.default}' AND viewname = '${viewName}';`);
         connection.closeSync();
         const viewDefinition = {
             name: viewName,
