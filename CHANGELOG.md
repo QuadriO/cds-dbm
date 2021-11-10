@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.31 (2021-11-10)
+
+
+### Bug Fixes
+
+* 🐛 remove fixed liquibase options ([341db2a](https://github.com/quadrio/cds-dbm/commit/341db2a8f445e09ec4aa3a61e10b2e24f4de8846))
+
 ### 0.0.30 (2021-11-09)
 
 ### 0.0.29 (2021-11-09)
