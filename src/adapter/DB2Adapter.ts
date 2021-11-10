@@ -26,7 +26,7 @@ export class DB2Adapter extends BaseAdapter {
     const connection = DB2.openSync(getCredentialsForClient(credentials, true))
 
     const rows = connection.querySync(
-        `SELECT viewname, text FROM SYSCAT.views WHERE viewschema = '${this.options.migrations.schema.default}' AND table_name = '${viewName}';`
+        `SELECT viewname, text FROM SYSCAT.views WHERE viewschema = '${this.options.migrations.schema.default}' AND viewname = '${viewName}';`
     )
     
     connection.closeSync();
