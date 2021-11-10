@@ -27,6 +27,7 @@ jobs:
           scope: '@QuadriO'
       - run: npm ci
       - run: npm build
+      - run: git add .
       - run: npm test
       - name: Configure committer
         run: |
