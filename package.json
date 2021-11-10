@@ -13,7 +13,7 @@
     "clean:ts": "npx rimraf dist",
     "build:ts": "tsc -b",
     "build:copy:assets": "npx ts-node util/copystaticassets.ts",
-    "release": "standard-version",
+    "release": "standard-version -a",
     "watch:ts": "tsc -w",
     "____test": "run-s test:pg:up jest jest:changelog test:pg:down",
     "____test:pg:up-nobg": "docker-compose -f test/app/docker.postgres.yml up",
