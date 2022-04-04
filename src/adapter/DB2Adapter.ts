@@ -90,7 +90,7 @@ export class DB2Adapter extends BaseAdapter {
       username: credentials.user || credentials.username,
       password: this.options.service.credentials.password,
       url: url,
-      classpath: `${__dirname}/../../drivers/db2jcc.jar`,
+      classpath: `${__dirname}/../../drivers/db2jcc4.jar`,
       driver: 'com.ibm.db2.jcc.DB2Driver',
     }
 
