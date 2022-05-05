@@ -8,6 +8,7 @@ set LIQUIBASE_HOME="%~dp0"
 
 set CP=.
 for /R %LIQUIBASE_HOME% %%f in (liquibase*.jar) do set CP=!CP!;%%f
+for /R liquibase_libs %%f in (*.jar) do set CP=!CP!;%%f
 for /R %LIQUIBASE_HOME%\lib %%f in (*.jar) do set CP=!CP!;%%f
 
 rem remove quotes around LIQUIBASE_HOME
@@ -33,4 +34,4 @@ IF NOT DEFINED JAVA_OPTS set JAVA_OPTS=
 set JAVA_PATH=java
 if NOT "%JAVA_HOME%" == "" set JAVA_PATH=%JAVA_HOME%\bin\java
 
-"%JAVA_PATH%" -cp "%CP%" %JAVA_OPTS% liquibase.integration.commandline.Main %*
+"%JAVA_PATH%" -cp "%CP%" %JAVA_OPTS% liquibase.integration.commandline.LiquibaseCommandLine %*
