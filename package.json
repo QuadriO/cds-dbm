@@ -1,5 +1,5 @@
 {
-  "name": "@quadrio/cds-dbm",
+  "name": "@quadrio-ext/cds-dbm",
   "version": "0.0.41",
   "description": "Database deployment and migrations for SAP CAP",
   "main": "index.js",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/quadrio/cds-dbm.git"
+    "url": "git+https://github.com/quadrio-ext/cds-dbm.git"
   },
   "keywords": [
     "sap",
