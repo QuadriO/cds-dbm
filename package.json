@@ -1,6 +1,9 @@
 {
-  "name": "@quadrio-ext/cds-dbm",
+  "name": "@quadrio/cds-dbm",
   "version": "0.0.44",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Database deployment and migrations for SAP CAP",
   "main": "index.js",
   "scripts": {
