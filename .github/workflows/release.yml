@@ -40,12 +40,3 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_GITHUB_REGISTRY_TOKEN }}
-      - run: rm .npmrc
-      - name: Use Node.js 14
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
